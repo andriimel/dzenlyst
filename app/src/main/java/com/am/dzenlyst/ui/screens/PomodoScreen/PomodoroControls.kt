@@ -14,14 +14,14 @@ import androidx.compose.ui.unit.dp
 import com.am.dzenlyst.ui.components.PrimaryButton
 
 @Composable
-fun PomodoroControls(){
+fun PomodoroControls(viewModel: PomodoroViewModel){
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.padding(top = 24.dp)
     ) {
-        PrimaryButton(text = "Start", onClick = {/* TODO */}, filled = true)
-        PrimaryButton(text = "Pause", onClick = {/* TODO */}, filled = false)
-        PrimaryButton(text = "Reset", onClick = {/* TODO */}, filled = false)
+        PrimaryButton(text = "Start", onClick = {viewModel.startTimer()}, filled = true)
+        PrimaryButton(text = "Pause", onClick = {viewModel.pauseTimer()}, filled = false)
+        PrimaryButton(text = "Reset", onClick = {viewModel.resetTimer()}, filled = false)
 
     }
 }
