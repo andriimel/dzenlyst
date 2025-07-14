@@ -1,5 +1,7 @@
 package com.am.dzenlyst.ui.screens.PomodoScreen
 
+
+import com.am.dzenlyst.R
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -13,12 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 @Composable
 fun PomodoroTimer(
     timeLeft: String,
-    progress: Float
+    progress: Float,
+    phase: PomodoroPhase
 ) {
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
@@ -28,10 +33,10 @@ fun PomodoroTimer(
         )
     )
 
-    val progressColor = if (progress < 0.2f) {
-        MaterialTheme.colorScheme.error
-    } else {
-        MaterialTheme.colorScheme.primary
+    val progressColor = when(phase) {
+        PomodoroPhase.Work -> MaterialTheme.colorScheme.primary
+        PomodoroPhase.ShortBreak -> colorResource(R.color.shortBreakColor)
+        PomodoroPhase.LongBreak -> colorResource(R.color.longBreakColor)
     }
 
     Box(
@@ -43,7 +48,7 @@ fun PomodoroTimer(
             strokeWidth = 8.dp,
             modifier = Modifier
                 .fillMaxSize()
-                .graphicsLayer { rotationZ = 180f }, // 🔁 reverse
+                .graphicsLayer { rotationZ = 180f }, // reverse
             color = progressColor
         )
 

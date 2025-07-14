@@ -17,6 +17,7 @@ fun PomodoroScreen() {
     val viewModel: PomodoroViewModel = hiltViewModel()
     val timeLeft = viewModel.timeLeft.collectAsState().value
     val progress = viewModel.progress.collectAsState().value
+    val phase = viewModel.phase.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -31,8 +32,17 @@ fun PomodoroScreen() {
             verticalArrangement = Arrangement.Center
         ) {
             Text("DzenLyst", style = MaterialTheme.typography.headlineMedium)
+            Text(
+                text = when(phase){
+                    PomodoroPhase.Work -> "Work Session"
+                    PomodoroPhase.ShortBreak -> "Short Break"
+                    PomodoroPhase.LongBreak ->  "Long Break"
+                },
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.secondary
+            )
             Spacer(modifier = Modifier.height(32.dp))
-            PomodoroTimer(timeLeft = timeLeft,progress = progress )
+            PomodoroTimer(timeLeft = timeLeft,progress = progress, phase = phase )
             PomodoroControls(viewModel = viewModel)
             Spacer(modifier = Modifier.height(32.dp))
             TaskList( modifier = Modifier.align(Alignment.CenterHorizontally))
