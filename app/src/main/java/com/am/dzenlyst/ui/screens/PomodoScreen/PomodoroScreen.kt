@@ -48,6 +48,6 @@ fun PomodoroScreen() {
             TaskList( modifier = Modifier.align(Alignment.CenterHorizontally))
         }
 
-        BottomNavBar()
+        //BottomNavBar()
     }
 }

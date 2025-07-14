@@ -35,7 +35,8 @@ class PomodoroViewModel @Inject constructor(app : Application) : AndroidViewMode
     private val _phase = MutableStateFlow(PomodoroPhase.Work)
     val phase: StateFlow<PomodoroPhase> = _phase
 
-    private var completedWorkSession = 0
+    private val _completedWorkSession = MutableStateFlow(0)
+    val completedWorkSession: StateFlow<Int> = _completedWorkSession
 
     private var timerJob: Job? = null
 
@@ -96,9 +97,9 @@ class PomodoroViewModel @Inject constructor(app : Application) : AndroidViewMode
     private fun advancePhase(){
         when(_phase.value) {
             PomodoroPhase.Work -> {
-                completedWorkSession++
+                _completedWorkSession.value = _completedWorkSession.value + 1
 
-                _phase.value = if (completedWorkSession % 4 == 0) {
+                _phase.value = if (_completedWorkSession.value % 4 == 0) {
                     PomodoroPhase.LongBreak
                 } else {
                     PomodoroPhase.ShortBreak

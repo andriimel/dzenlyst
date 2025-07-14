@@ -1,11 +1,13 @@
 package com.am.dzenlyst.ui.components
 
+import com.am.dzenlyst.R
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -23,7 +25,7 @@ fun PrimaryButton(
             modifier = modifier,
             shape = shape,
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = colorResource(R.color.FocusBlueLight)
             ),
             contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
         ) {

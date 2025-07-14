@@ -34,9 +34,9 @@ fun PomodoroTimer(
     )
 
     val progressColor = when(phase) {
-        PomodoroPhase.Work -> MaterialTheme.colorScheme.primary
-        PomodoroPhase.ShortBreak -> colorResource(R.color.shortBreakColor)
-        PomodoroPhase.LongBreak -> colorResource(R.color.longBreakColor)
+        PomodoroPhase.Work -> colorResource(R.color.FocusBlueLight)
+        PomodoroPhase.ShortBreak -> colorResource(R.color.ChartBarColor)
+        PomodoroPhase.LongBreak -> colorResource(R.color.FocusBlueLight)
     }
 
     Box(
