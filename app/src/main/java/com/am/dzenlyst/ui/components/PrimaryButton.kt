@@ -25,7 +25,7 @@ fun PrimaryButton(
             modifier = modifier,
             shape = shape,
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(R.color.FocusBlueLight)
+                containerColor = colorResource(R.color.focusBlueLight)
             ),
             contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
         ) {

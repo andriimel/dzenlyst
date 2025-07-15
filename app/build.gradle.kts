@@ -5,6 +5,8 @@ plugins {
 
     id("dagger.hilt.android.plugin")
     id("kotlin-kapt")
+
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -44,12 +46,19 @@ android {
 
 dependencies {
 
+    val room_version = "2.7.2"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+
     //Dagger-Hilt
     implementation("com.google.dagger:hilt-android:2.56.2")
     kapt("com.google.dagger:hilt-compiler:2.56.2")
 
     // Для Hilt ViewModel
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    implementation("androidx.compose.material:material:1.8.3")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

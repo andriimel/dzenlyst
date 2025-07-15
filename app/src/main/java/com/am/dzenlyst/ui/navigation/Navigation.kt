@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.am.dzenlyst.ui.screens.PomodoScreen.BottomNavBar
 import com.am.dzenlyst.ui.screens.PomodoScreen.PomodoroScreen
 import com.am.dzenlyst.ui.screens.PomodoScreen.PomodoroViewModel
+import com.am.dzenlyst.ui.screens.Tasks.TasksScreen
 
 @Composable
 fun Navigation(viewModel: PomodoroViewModel= hiltViewModel()){
@@ -41,7 +42,7 @@ fun Navigation(viewModel: PomodoroViewModel= hiltViewModel()){
             modifier = Modifier.padding(innerPadding)
         ){
             composable(Screens.Focus.route) { PomodoroScreen() }
-            composable(Screens.Tasks.route) { /* TasksScreen() */ }
+            composable(Screens.Tasks.route) { TasksScreen() }
             composable(Screens.Stats.route) { StatsScreen() }
             composable(Screens.Coach.route) { /* CoachScreen() */ }
         }

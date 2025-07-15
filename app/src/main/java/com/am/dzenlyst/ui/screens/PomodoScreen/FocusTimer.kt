@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
@@ -34,9 +33,9 @@ fun PomodoroTimer(
     )
 
     val progressColor = when(phase) {
-        PomodoroPhase.Work -> colorResource(R.color.FocusBlueLight)
-        PomodoroPhase.ShortBreak -> colorResource(R.color.ChartBarColor)
-        PomodoroPhase.LongBreak -> colorResource(R.color.FocusBlueLight)
+        PomodoroPhase.Work -> colorResource(R.color.focusBlueLight)
+        PomodoroPhase.ShortBreak -> colorResource(R.color.chartBarColor)
+        PomodoroPhase.LongBreak -> colorResource(R.color.focusBlueLight)
     }
 
     Box(
