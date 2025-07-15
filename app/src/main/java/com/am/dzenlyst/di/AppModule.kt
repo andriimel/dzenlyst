@@ -2,9 +2,11 @@ package com.am.dzenlyst.di
 
 import android.app.Application
 import androidx.room.Room
-import com.am.dzenlyst.data.task.AppDatabase
-import com.am.dzenlyst.data.task.TaskDao
-import com.am.dzenlyst.data.task.TaskRepository
+import com.am.dzenlyst.data.local.focus.FocusSessionDao
+import com.am.dzenlyst.data.local.focus.FocusSessionRepository
+import com.am.dzenlyst.data.local.AppDatabase
+import com.am.dzenlyst.data.local.task.TaskDao
+import com.am.dzenlyst.data.local.task.TaskRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,4 +32,12 @@ object AppModule {
 
     @Provides
     fun provideTaskRepository(dao: TaskDao): TaskRepository = TaskRepository(dao)
+
+    @Provides
+    fun  providesFocusSessionsDao(db : AppDatabase): FocusSessionDao = db.focusSessionDao()
+
+    @Provides
+    fun provideFocusSessionRepository(dao : FocusSessionDao): FocusSessionRepository =
+        FocusSessionRepository(dao)
+
 }

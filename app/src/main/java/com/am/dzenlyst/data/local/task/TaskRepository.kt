@@ -1,4 +1,4 @@
-package com.am.dzenlyst.data.task
+package com.am.dzenlyst.data.local.task
 
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -8,6 +8,8 @@ class TaskRepository @Inject constructor(
 ) {
 
     val allTasks: Flow<List<TaskEntity>> = dao.getAllTasks()
+    val completedTaskCount: Flow<Int> = dao.getCompletedTask()
+    val topTasks: Flow<List<TaskEntity>> = dao.getTop3UndoneTasks()
 
     suspend fun addTask(text: String, priority: TaskPriority) {
         val newTask = TaskEntity(text = text, isDone = false, priority = priority)

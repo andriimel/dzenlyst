@@ -1,5 +1,6 @@
 package com.am.dzenlyst.ui.screens.PomodoScreen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,13 +16,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.am.dzenlyst.data.local.task.TaskEntity
 
 @Composable
-fun TaskList(modifier: Modifier = Modifier){
+fun FocusTaskList(modifier: Modifier = Modifier, tasks: List<TaskEntity>, onClick:()-> Unit){
+    if (tasks.isEmpty()) return
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp),
+            .padding(horizontal = 32.dp)
+            .clickable{onClick()},
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
@@ -35,11 +39,7 @@ fun TaskList(modifier: Modifier = Modifier){
                 style = MaterialTheme.typography.titleMedium
             )
 
-            listOf(
-                "Finish report" to "High",
-                "Review notes" to "Medium",
-                "Plan meeting" to "Medium"
-            ).forEach { (task, priority) ->
+            tasks.forEach { task ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -47,12 +47,12 @@ fun TaskList(modifier: Modifier = Modifier){
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(
-                            checked = false,
-                            onCheckedChange = { /* TODO */ }
+                            checked = task.isDone,
+                            onCheckedChange = {}
                         )
-                        Text(task)
+                        Text(task.text)
                     }
-                    Text("($priority)", style = MaterialTheme.typography.bodySmall)
+                    Text("(${task.priority.name})", style = MaterialTheme.typography.bodySmall)
                 }
             }
         }

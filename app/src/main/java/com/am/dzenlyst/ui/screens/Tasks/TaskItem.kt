@@ -15,11 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import com.am.dzenlyst.R
-import com.am.dzenlyst.data.task.TaskEntity
-import com.am.dzenlyst.data.task.TaskPriority
+import com.am.dzenlyst.data.local.task.TaskEntity
+import com.am.dzenlyst.data.local.task.TaskPriority
 @Composable
 fun TaskItem(
     task: TaskEntity,

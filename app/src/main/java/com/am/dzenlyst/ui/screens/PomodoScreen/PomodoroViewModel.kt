@@ -14,11 +14,24 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.compose.runtime.*
+import com.am.dzenlyst.data.local.focus.FocusSessionEntity
+import com.am.dzenlyst.data.local.focus.FocusSessionRepository
+import com.am.dzenlyst.data.local.task.TaskDao
+import com.am.dzenlyst.data.local.task.TaskEntity
+import com.am.dzenlyst.data.local.task.TaskRepository
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.Date
+import java.util.Locale
 import kotlin.getValue
 
 @HiltViewModel
-class PomodoroViewModel @Inject constructor(app : Application) : AndroidViewModel(app) {
+class PomodoroViewModel @Inject constructor(app : Application,
+    private val focusSessionRepository: FocusSessionRepository) : AndroidViewModel(app) {
     private val _timeLeft = MutableStateFlow("25:00")
     val timeLeft : StateFlow<String> = _timeLeft
 
@@ -45,6 +58,7 @@ class PomodoroViewModel @Inject constructor(app : Application) : AndroidViewMode
         MediaPlayer.create(context, R.raw.alarm_beep)
     }
 
+
     private fun playSound() {
         Log.d("Pomodoro !!!!", "Sound is playing !!")
         mediaPlayer.start()
@@ -67,6 +81,7 @@ class PomodoroViewModel @Inject constructor(app : Application) : AndroidViewMode
 
                 isRunning = false
                 _isRunningFlow.value = false
+
                 playSound()
                 advancePhase()
             }
@@ -88,40 +103,53 @@ class PomodoroViewModel @Inject constructor(app : Application) : AndroidViewMode
         _progress.value = 1f
     }
 
+
     private fun formatTime(seconds: Int): String{
         val m = seconds/60
         val s = seconds % 60
         return "%02d:%02d".format(m, s)
     }
 
-    private fun advancePhase(){
-        when(_phase.value) {
-            PomodoroPhase.Work -> {
-                _completedWorkSession.value = _completedWorkSession.value + 1
+    private fun advancePhase() {
+        if (_phase.value == PomodoroPhase.Work) {
+            _completedWorkSession.value++
+            saveSessionToDb()
+        }
 
-                _phase.value = if (_completedWorkSession.value % 4 == 0) {
+        _phase.value = when (_phase.value) {
+            PomodoroPhase.Work -> {
+                if (_completedWorkSession.value % 4 == 0)
                     PomodoroPhase.LongBreak
-                } else {
+                else
                     PomodoroPhase.ShortBreak
-                }
             }
             PomodoroPhase.ShortBreak,
-            PomodoroPhase.LongBreak -> {
-                _phase.value = PomodoroPhase.Work
-            }
+            PomodoroPhase.LongBreak -> PomodoroPhase.Work
         }
 
-
-
-
-        totalSeconds = when(_phase.value){
+        totalSeconds = when (_phase.value) {
             PomodoroPhase.Work -> 25 * 60
-            PomodoroPhase.LongBreak -> 15 * 60
             PomodoroPhase.ShortBreak -> 5 * 60
-
+            PomodoroPhase.LongBreak -> 15 * 60
         }
+
         _timeLeft.value = formatTime(totalSeconds)
         _progress.value = 1f
-}
+    }
+    private fun saveSessionToDb(){
+        viewModelScope.launch {
+            val today = LocalDate.now().toString()
+            val exsiting =  focusSessionRepository.getByDate(today)
+
+            if (exsiting != null) {
+
+            val updated  = exsiting.copy(sessionCount = exsiting.sessionCount + 1)
+            focusSessionRepository.update(updated)
+            } else {
+
+            focusSessionRepository.insert(FocusSessionEntity(date = today, sessionCount = 1))}
+        }
+    }
+
 
 }

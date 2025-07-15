@@ -1,4 +1,4 @@
-package com.am.dzenlyst.data.task
+package com.am.dzenlyst.data.local.task
 
 enum class TaskPriority {
     Low,

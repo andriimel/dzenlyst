@@ -9,7 +9,7 @@ import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.am.dzenlyst.data.task.TaskEntity
+import com.am.dzenlyst.data.local.task.TaskEntity
 
 @Composable
 fun SwipeTaskItem(

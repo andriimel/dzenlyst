@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.am.dzenlyst.data.task.TaskPriority
+import com.am.dzenlyst.data.local.task.TaskPriority
 
 @Composable
 fun PriorityDropdown(

@@ -64,7 +64,7 @@ fun StatsScreenContent(
                         Box(
                             modifier = Modifier
                                 .height((count * 80 / max).dp)
-                                .width(20.dp)
+                                .width(28.dp)
                                 .background(
                                     color = colorResource(R.color.chartBarColor), // or MaterialTheme.colorScheme.primary
                                     shape = RoundedCornerShape(4.dp)
