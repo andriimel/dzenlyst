@@ -2,6 +2,8 @@ package com.am.dzenlyst.di
 
 import android.app.Application
 import androidx.room.Room
+import com.am.dzenlyst.ai.GeminiRepository
+import com.am.dzenlyst.ai.GeminiService
 import com.am.dzenlyst.data.local.focus.FocusSessionDao
 import com.am.dzenlyst.data.local.focus.FocusSessionRepository
 import com.am.dzenlyst.data.local.AppDatabase
@@ -39,5 +41,15 @@ object AppModule {
     @Provides
     fun provideFocusSessionRepository(dao : FocusSessionDao): FocusSessionRepository =
         FocusSessionRepository(dao)
+
+    @Provides
+    @Singleton
+    fun provideGeminiService(): GeminiService = GeminiService()
+
+    @Provides
+    @Singleton
+    fun provideGeminiRepository(
+        service: GeminiService
+    ): GeminiRepository = GeminiRepository(service)
 
 }

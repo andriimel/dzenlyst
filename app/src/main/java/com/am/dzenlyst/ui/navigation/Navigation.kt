@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.am.dzenlyst.ui.screens.Coach.CoachScreen
 import com.am.dzenlyst.ui.screens.PomodoScreen.BottomNavBar
 import com.am.dzenlyst.ui.screens.PomodoScreen.PomodoroScreen
 import com.am.dzenlyst.ui.screens.PomodoScreen.PomodoroViewModel
@@ -44,7 +45,7 @@ fun Navigation(viewModel: PomodoroViewModel= hiltViewModel()){
             composable(Screens.Focus.route) { PomodoroScreen(navController) }
             composable(Screens.Tasks.route) { TasksScreen() }
             composable(Screens.Stats.route) { StatsScreen() }
-            composable(Screens.Coach.route) { /* CoachScreen() */ }
+            composable(Screens.Coach.route) { CoachScreen() }
         }
     }
 }
