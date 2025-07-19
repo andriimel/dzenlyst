@@ -1,9 +1,11 @@
 package com.am.dzenlyst.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.am.dzenlyst.ai.GeminiRepository
 import com.am.dzenlyst.ai.GeminiService
+import com.am.dzenlyst.data.datastore.PomodoroPreferencesManager
 import com.am.dzenlyst.data.local.focus.FocusSessionDao
 import com.am.dzenlyst.data.local.focus.FocusSessionRepository
 import com.am.dzenlyst.data.local.AppDatabase
@@ -12,6 +14,7 @@ import com.am.dzenlyst.data.local.task.TaskRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -51,5 +54,11 @@ object AppModule {
     fun provideGeminiRepository(
         service: GeminiService
     ): GeminiRepository = GeminiRepository(service)
+
+    @Provides
+    @Singleton
+    fun providePomodoroPreferencesManager(@ApplicationContext context: Context): PomodoroPreferencesManager {
+        return PomodoroPreferencesManager(context)
+    }
 
 }

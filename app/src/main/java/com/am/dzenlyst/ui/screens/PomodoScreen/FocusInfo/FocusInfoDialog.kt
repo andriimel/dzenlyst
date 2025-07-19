@@ -1,10 +1,9 @@
-package com.am.dzenlyst.ui.screens.PomodoScreen
+package com.am.dzenlyst.ui.screens.PomodoScreen.FocusInfo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -42,7 +41,7 @@ fun FocusInfoDialog(
         },
         confirmButton = {
             PrimaryButton(text = "Close", onClick = onDismiss, filled = true )
-            
+
         }
     )
 }

@@ -14,11 +14,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.compose.runtime.*
+import com.am.dzenlyst.data.datastore.PomodoroPreferencesManager
 import com.am.dzenlyst.data.local.focus.FocusSessionEntity
 import com.am.dzenlyst.data.local.focus.FocusSessionRepository
 import com.am.dzenlyst.data.local.task.TaskDao
 import com.am.dzenlyst.data.local.task.TaskEntity
 import com.am.dzenlyst.data.local.task.TaskRepository
+import com.am.dzenlyst.ui.screens.PomodoScreen.PomodoroTypes.PomodoroMode
+import com.am.dzenlyst.ui.screens.PomodoScreen.PomodoroTypes.PomodoroModes
+import com.am.dzenlyst.ui.screens.PomodoScreen.PomodoroTypes.getPomodoroModeByType
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -31,6 +35,7 @@ import kotlin.getValue
 
 @HiltViewModel
 class PomodoroViewModel @Inject constructor(app : Application,
+                                            private val preferencesManager: PomodoroPreferencesManager,
     private val focusSessionRepository: FocusSessionRepository) : AndroidViewModel(app) {
     private val _timeLeft = MutableStateFlow("25:00")
     val timeLeft : StateFlow<String> = _timeLeft
@@ -51,6 +56,9 @@ class PomodoroViewModel @Inject constructor(app : Application,
     private val _completedWorkSession = MutableStateFlow(0)
     val completedWorkSession: StateFlow<Int> = _completedWorkSession
 
+    private val _selectMode = mutableStateOf(PomodoroModes.first())
+    val selectMode : State<PomodoroMode> = _selectMode
+
     private var timerJob: Job? = null
 
     private val context = app.applicationContext
@@ -58,10 +66,33 @@ class PomodoroViewModel @Inject constructor(app : Application,
         MediaPlayer.create(context, R.raw.alarm_beep)
     }
 
+    fun setMode(mode: PomodoroMode){
+        _selectMode.value = mode
+        resetTimer()
+    }
 
     private fun playSound() {
         Log.d("Pomodoro !!!!", "Sound is playing !!")
         mediaPlayer.start()
+    }
+
+    init {
+        viewModelScope.launch {
+            preferencesManager.selectedModeFlow.collect { savedModeType ->
+                if (savedModeType != null) {
+                    val mode = getPomodoroModeByType(savedModeType)
+                    _selectMode.value = mode
+                    resetTimer()
+                }
+            }
+        }
+    }
+    fun onModeSelected(mode: PomodoroMode) {
+        _selectMode.value = mode
+        resetTimer()
+        viewModelScope.launch {
+            preferencesManager.saveSelectedMode(mode.type)
+        }
     }
 
     fun startTimer() {
@@ -98,8 +129,8 @@ class PomodoroViewModel @Inject constructor(app : Application,
         _isRunningFlow.value = false
         timerJob?.cancel()
 
-        totalSeconds = 25 * 60
-        _timeLeft.value = "25:00"
+        totalSeconds = _selectMode.value.workDuration * 60
+        _timeLeft.value = formatTime(totalSeconds)
         _progress.value = 1f
     }
 
@@ -128,9 +159,9 @@ class PomodoroViewModel @Inject constructor(app : Application,
         }
 
         totalSeconds = when (_phase.value) {
-            PomodoroPhase.Work -> 25 * 60
-            PomodoroPhase.ShortBreak -> 5 * 60
-            PomodoroPhase.LongBreak -> 15 * 60
+            PomodoroPhase.Work -> _selectMode.value.workDuration * 60
+            PomodoroPhase.ShortBreak -> _selectMode.value.shortBreak * 60
+            PomodoroPhase.LongBreak -> _selectMode.value.longBreak * 60
         }
 
         _timeLeft.value = formatTime(totalSeconds)

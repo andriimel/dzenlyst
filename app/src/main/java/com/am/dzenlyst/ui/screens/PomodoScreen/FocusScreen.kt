@@ -12,6 +12,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.am.dzenlyst.ui.screens.Tasks.TaskViewModel
 import androidx.compose.runtime.*
 import androidx.navigation.NavController
+import com.am.dzenlyst.ui.screens.PomodoScreen.FocusInfo.FocusInfoDialog
+import com.am.dzenlyst.ui.screens.PomodoScreen.PomodoroTypes.PomodoroModeSelectorDialog
 
 
 @Composable
@@ -26,6 +28,8 @@ fun PomodoroScreen(navController: NavController) {
     val topTasks by taskViewModel.topTasks.collectAsState()
 
     var showInfoDialog by remember {mutableStateOf(false)}
+    var showModeDialog by remember { mutableStateOf(false) }
+
 
 
     Column(
@@ -34,7 +38,7 @@ fun PomodoroScreen(navController: NavController) {
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         FocusHeader(onInfoClick = {showInfoDialog = true},
-            onModeClick = {})
+            onModeClick = {showModeDialog = true})
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -68,6 +72,18 @@ fun PomodoroScreen(navController: NavController) {
 
                 FocusInfoDialog(onDismiss = { showInfoDialog = false })
             }
+
+            if (showModeDialog){
+                PomodoroModeSelectorDialog(
+                    currentMode = viewModel.selectMode.value,
+                    onSelect = {mode ->
+                        viewModel.onModeSelected(mode)
+                        showModeDialog = false
+                    },
+                    onDismiss = {showModeDialog = false}
+                )
+            }
+
         }
 
         //BottomNavBar()

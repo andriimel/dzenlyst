@@ -68,6 +68,9 @@ dependencies {
     //Gemini
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 
+    //DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
