@@ -25,12 +25,16 @@ fun PomodoroScreen(navController: NavController) {
     val taskViewModel: TaskViewModel = hiltViewModel()
     val topTasks by taskViewModel.topTasks.collectAsState()
 
+    var showInfoDialog by remember {mutableStateOf(false)}
+
 
     Column(
         modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
+        FocusHeader(onInfoClick = {showInfoDialog = true},
+            onModeClick = {})
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -58,6 +62,11 @@ fun PomodoroScreen(navController: NavController) {
                     restoreState = true
                     popUpTo("focus") { saveState = true }
                 }
+            }
+
+            if (showInfoDialog) {
+
+                FocusInfoDialog(onDismiss = { showInfoDialog = false })
             }
         }
 

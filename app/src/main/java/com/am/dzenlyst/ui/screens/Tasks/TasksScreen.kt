@@ -1,5 +1,6 @@
 package com.am.dzenlyst.ui.screens.Tasks
 
+import com.am.dzenlyst.R
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.am.dzenlyst.data.local.task.TaskPriority
@@ -38,7 +40,7 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
                         coroutineScope.launch { sheetState.show() }
                     },
                     shape = CircleShape,
-                    containerColor = MaterialTheme.colorScheme.primary
+                    containerColor = colorResource(R.color.focusBlueLight)
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add", tint = Color.White)
                 }
@@ -82,6 +84,7 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
 
         // Bottom view
         if (showSheet) {
+
             ModalBottomSheet(
                 onDismissRequest = {
                     coroutineScope.launch {
