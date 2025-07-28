@@ -1,7 +1,10 @@
 package com.am.dzenlyst.ui.screens.Coach
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -17,6 +20,7 @@ fun CoachScreen(viewModel: CoachViewModel = hiltViewModel()) {
     val prompt = viewModel.prompt
     val result = viewModel.result
     val isLoading = viewModel.isLoading
+    val scrollState = rememberScrollState()
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -46,6 +50,7 @@ fun CoachScreen(viewModel: CoachViewModel = hiltViewModel()) {
                     shape = MaterialTheme.shapes.medium,
                     tonalElevation = 4.dp,
                     modifier = Modifier.fillMaxWidth()
+                        .verticalScroll(scrollState)
                 ) {
                     Text(
                         text = result,

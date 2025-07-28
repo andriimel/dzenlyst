@@ -29,6 +29,7 @@ class CoachViewModel @Inject constructor( private val repo: GeminiRepository): V
             isLoading = true
             try {
                 result = repo.ask(currentPrompt)
+                prompt = ""
             } catch (e: Exception) {
                 result = "Error: ${e.localizedMessage}"
             } finally {
