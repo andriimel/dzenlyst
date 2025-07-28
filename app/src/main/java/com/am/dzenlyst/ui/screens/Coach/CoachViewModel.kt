@@ -22,11 +22,13 @@ class CoachViewModel @Inject constructor( private val repo: GeminiRepository): V
     }
 
     fun askGemini() {
+        val currentPrompt = prompt.trim()
+        if (currentPrompt.isBlank()) return
+
         viewModelScope.launch {
             isLoading = true
-            prompt = ""
             try {
-                result = repo.ask(prompt)
+                result = repo.ask(currentPrompt)
             } catch (e: Exception) {
                 result = "Error: ${e.localizedMessage}"
             } finally {

@@ -7,6 +7,7 @@ plugins {
     id("kotlin-kapt")
 
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -47,6 +48,16 @@ android {
 dependencies {
 
     val room_version = "2.7.2"
+
+    implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
+
+
+    // TODO: Add the dependencies for Firebase products
+
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    implementation("com.google.firebase:firebase-ai")
+
 
     implementation("androidx.room:room-runtime:$room_version")
     ksp("androidx.room:room-compiler:$room_version")

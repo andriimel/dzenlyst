@@ -14,6 +14,7 @@ val PomodoroModes = listOf(
     PomodoroMode(PomodoroModeType.EXTENDED, 50, 10, 20, 4),
     PomodoroMode(PomodoroModeType.SPRINT, 15, 3, 10, 4),
     PomodoroMode(PomodoroModeType.BALANCED, 35, 7, 15, 4)
+
 )
 fun getPomodoroModeByType(typeName: String?): PomodoroMode {
     val type = typeName?.let {

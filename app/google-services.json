@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "137764885060",
+    "project_id": "dzenlyst",
+    "storage_bucket": "dzenlyst.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137764885060:android:d4355e72cb403606456211",
+        "android_client_info": {
+          "package_name": "com.am.dzenlyst"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUr5RweapFbstUyL2LCu5tcHKP8ewMFzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
