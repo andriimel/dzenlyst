@@ -28,7 +28,7 @@ fun SwipeTaskItem(
     SwipeToDismiss(
         state = dismissState,
         directions = setOf(DismissDirection.EndToStart),
-        background = { /* optional background */ },
+        background = { },
         dismissContent = {
             TaskItem(task = task, onToggle = onToggle)
         }

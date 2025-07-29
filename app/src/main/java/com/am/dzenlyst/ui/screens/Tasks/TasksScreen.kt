@@ -31,27 +31,18 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
     var input by remember { mutableStateOf("") }
     var selectedPriority by remember { mutableStateOf(TaskPriority.Normal) }
 
-    Scaffold(
-        floatingActionButton = {
-            if (!showSheet) {
-                FloatingActionButton(
-                    onClick = {
-                        showSheet = true
-                        coroutineScope.launch { sheetState.show() }
-                    },
-                    shape = CircleShape,
-                    containerColor = colorResource(R.color.focusBlueLight)
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add", tint = Color.White)
-                }
-            }
-        }
-    ) { padding ->
+    Scaffold {
+        padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 24.dp, vertical = 16.dp),
+                .padding(horizontal = 24.dp, vertical = 0.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text("Tasks", style = MaterialTheme.typography.headlineMedium)
@@ -59,82 +50,100 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 350.dp),
+                    .fillMaxHeight(),
                 shape = RoundedCornerShape(16.dp),
-                color = Color(0xFFF5F5F5)
-            ) {
+
+                ) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 350.dp)
+
                         .padding(horizontal = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(tasks, key = { it.id }) { task ->
+
                         SwipeTaskItem(
                             task = task,
                             onToggle = { viewModel.toggleDone(task) },
-                            onDelete = { viewModel.deleteTask(task) }
-                        )
-                        Divider()
+                            onDelete = { viewModel.deleteTask(task) },
+
+                            )
+
                     }
                 }
             }
         }
-
-        // Bottom view
-        if (showSheet) {
-
-            ModalBottomSheet(
-                onDismissRequest = {
-                    coroutineScope.launch {
-                        sheetState.hide()
-                        if (input.isNotBlank()) {
-                            viewModel.addTask(input, selectedPriority)
-                            input = ""
-                        }
-                        showSheet = false
-                    }
-                },
-                sheetState = sheetState,
-                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-            ){
-                Column(
+            if(!showSheet){
+                FloatingActionButton(
+                    onClick = {
+                        showSheet = true
+                        coroutineScope.launch { sheetState.show() }
+                    },
+                    shape = CircleShape,
+                    containerColor = colorResource(R.color.focusBlueLight),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                        .align(Alignment.TopEnd)
+                        .padding(16.dp)
                 ) {
-                    OutlinedTextField(
-                        value = input,
-                        onValueChange = { input = it },
-                        placeholder = { Text("New task") },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    Icon(Icons.Default.Add, contentDescription = "Add", tint = Color.White)
+                }
+            }
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        PriorityDropdown(
-                            selected = selectedPriority,
-                            onChange = { selectedPriority = it }
-                        )
+            // Bottom view
+            if (showSheet) {
 
-                        PrimaryButton(
-                            text = "Add",
-                            onClick = {
-                                coroutineScope.launch {
-                                    if (input.isNotBlank()) {
-                                        viewModel.addTask(input, selectedPriority)
-                                        input = ""
-                                    }
-                                    sheetState.hide()
-                                    showSheet = false
-                                }
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                            if (input.isNotBlank()) {
+                                viewModel.addTask(input, selectedPriority)
+                                input = ""
                             }
+                            showSheet = false
+                        }
+                    },
+                    sheetState = sheetState,
+                    shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = input,
+                            onValueChange = { input = it },
+                            placeholder = { Text("New task") },
+                            modifier = Modifier.fillMaxWidth()
                         )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            PriorityDropdown(
+                                selected = selectedPriority,
+                                onChange = { selectedPriority = it }
+                            )
+
+                            PrimaryButton(
+                                text = "Add",
+                                onClick = {
+                                    coroutineScope.launch {
+                                        if (input.isNotBlank()) {
+                                            viewModel.addTask(input, selectedPriority)
+                                            input = ""
+                                        }
+                                        sheetState.hide()
+                                        showSheet = false
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
             }
