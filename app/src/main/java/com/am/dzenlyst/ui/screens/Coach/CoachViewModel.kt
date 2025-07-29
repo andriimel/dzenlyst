@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.am.dzenlyst.ai.GeminiRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import androidx.compose.runtime.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,8 +29,13 @@ class CoachViewModel @Inject constructor( private val repo: GeminiRepository): V
         viewModelScope.launch {
             isLoading = true
             try {
-                result = repo.ask(currentPrompt)
+                val fullAnswer = repo.ask(currentPrompt)
                 prompt = ""
+                result = ""
+                for ( char in fullAnswer) {
+                    result += char
+                    delay(30)
+                }
             } catch (e: Exception) {
                 result = "Error: ${e.localizedMessage}"
             } finally {

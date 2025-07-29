@@ -13,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.compose.ui.Alignment
 import com.am.dzenlyst.ui.components.PrimaryButton
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -72,4 +73,23 @@ fun CoachScreen(viewModel: CoachViewModel = hiltViewModel()) {
             }
         }
     }
+}
+
+@Composable
+fun TypingEffectText(
+    fullText: String,
+    charDelayMillis: Long = 30,
+    modifier: Modifier = Modifier
+) {
+    var displayedText by remember { mutableStateOf("") }
+
+    LaunchedEffect(fullText) {
+        displayedText = ""
+        for (char in fullText) {
+            displayedText += char
+            delay(charDelayMillis)
+        }
+    }
+
+    Text(text = displayedText, modifier = modifier)
 }
