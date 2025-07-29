@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
 fun BottomNavBar(
-    selected: String = "focus", // or pass current route later
+    selected: String = "focus",
     onItemSelected: (String) -> Unit = {}
 ) {
     val items = listOf(

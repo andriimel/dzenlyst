@@ -79,6 +79,7 @@ fun PomodoroScreen(navController: NavController) {
                     onSelect = {mode ->
                         viewModel.onModeSelected(mode)
                         showModeDialog = false
+                        viewModel.resetPhaseToWork()
                     },
                     onDismiss = {showModeDialog = false}
                 )

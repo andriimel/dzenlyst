@@ -141,6 +141,10 @@ class PomodoroViewModel @Inject constructor(app : Application,
         return "%02d:%02d".format(m, s)
     }
 
+    fun resetPhaseToWork(){
+        _phase.value = PomodoroPhase.Work
+        resetTimer()
+    }
     private fun advancePhase() {
         if (_phase.value == PomodoroPhase.Work) {
             _completedWorkSession.value++
