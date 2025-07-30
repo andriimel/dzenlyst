@@ -9,15 +9,21 @@ import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.am.dzenlyst.data.local.task.TaskEntity
 
 @Composable
 fun SwipeTaskItem(
     task: TaskEntity,
     onDelete: () -> Unit,
-    onToggle: () -> Unit
+    onToggle: () -> Unit,
+    onClick: (TaskEntity) -> Unit
 ) {
     val dismissState = rememberDismissState()
+
 
     LaunchedEffect(dismissState.currentValue) {
         if (dismissState.currentValue == DismissValue.DismissedToStart) {
@@ -30,7 +36,7 @@ fun SwipeTaskItem(
         directions = setOf(DismissDirection.EndToStart),
         background = { },
         dismissContent = {
-            TaskItem(task = task, onToggle = onToggle)
+            TaskItem(task = task, onToggle = onToggle, onClick = {onClick(task)})
         }
     )
 }

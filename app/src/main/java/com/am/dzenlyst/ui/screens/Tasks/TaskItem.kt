@@ -1,5 +1,6 @@
 package com.am.dzenlyst.ui.screens.Tasks
 
+import androidx.compose.foundation.clickable
 import com.am.dzenlyst.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -23,7 +24,8 @@ import com.am.dzenlyst.data.local.task.TaskPriority
 @Composable
 fun TaskItem(
     task: TaskEntity,
-    onToggle: () -> Unit
+    onToggle: () -> Unit,
+    onClick:() -> Unit
 ) {
     val priorityColor = when (task.priority) {
         TaskPriority.High -> colorResource(id = R.color.taskPriorityHighBgColor)
@@ -38,7 +40,8 @@ fun TaskItem(
     }
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
+            .clickable(onClick = { onClick()}),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)

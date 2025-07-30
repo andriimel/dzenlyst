@@ -2,6 +2,7 @@ package com.am.dzenlyst.ui.screens.Stats
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.am.dzenlyst.data.datastore.PomodoroPreferencesManager
 import com.am.dzenlyst.data.local.focus.FocusSessionDao
 import com.am.dzenlyst.data.local.focus.FocusSessionEntity
 import com.am.dzenlyst.data.local.focus.FocusSessionRepository
@@ -11,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDate
@@ -19,13 +21,15 @@ import javax.inject.Inject
 @HiltViewModel
 class StatsViewModel @Inject constructor(
     private val focusSessionDao: FocusSessionDao,
+    private val preferencesManager: PomodoroPreferencesManager,
     private val taskRepository: TaskRepository
 ) : ViewModel() {
-    val completedTaskCount = taskRepository.completedTaskCount.stateIn(
-        viewModelScope,
-        SharingStarted.Lazily,
-        0
-    )
+
+    val completedTasksCount: StateFlow<Int> = preferencesManager
+    .completedTasksCountFlow
+    .stateIn(viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        0)
 
     val last7Sessions: StateFlow<List<FocusSessionEntity>> =
         focusSessionDao.getLast7Sessions()

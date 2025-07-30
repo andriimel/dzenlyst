@@ -16,8 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.am.dzenlyst.data.local.task.TaskEntity
 import com.am.dzenlyst.data.local.task.TaskPriority
 import com.am.dzenlyst.ui.components.PrimaryButton
+import com.am.dzenlyst.ui.screens.TaskDetailsScreen.TaskDetailsDialogue
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -26,10 +28,16 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
     val tasks by viewModel.tasks.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
+    var selectedTask by remember {mutableStateOf<TaskEntity?>(null)}
 
     var showSheet by remember { mutableStateOf(false) }
     var input by remember { mutableStateOf("") }
     var selectedPriority by remember { mutableStateOf(TaskPriority.Normal) }
+
+    var showDialog by remember { mutableStateOf(false) }
+
+    var showSubtaskSheet by remember { mutableStateOf(false) }
+    var subtaskInput by remember { mutableStateOf("") }
 
     Scaffold {
         padding ->
@@ -66,14 +74,30 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
                         SwipeTaskItem(
                             task = task,
                             onToggle = { viewModel.toggleDone(task) },
-                            onDelete = { viewModel.deleteTask(task) },
-
+                            onDelete = { viewModel.deleteTask(task)
+                                       showDialog = true},
+                            onClick = {selectedTask = it}
                             )
-
                     }
                 }
             }
         }
+            selectedTask?.let { task ->
+                TaskDetailsDialogue(task = task,
+                    onEditClick = { showSubtaskSheet = true},
+                    onDismiss = {selectedTask = null})
+
+            }
+
+            if (showDialog){
+                ConfirmDialog(onConfirm = {
+                    showDialog = false
+                    viewModel.incrementConfirmedProjects()
+                },
+                    onDismiss = {
+                        showDialog = false
+                    })
+            }
             if(!showSheet){
                 FloatingActionButton(
                     onClick = {

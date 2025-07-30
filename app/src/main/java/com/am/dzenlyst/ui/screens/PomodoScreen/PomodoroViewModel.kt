@@ -62,6 +62,7 @@ class PomodoroViewModel @Inject constructor(app : Application,
     private var timerJob: Job? = null
 
     private val context = app.applicationContext
+
     private val mediaPlayer by lazy {
         MediaPlayer.create(context, R.raw.alarm_beep)
     }

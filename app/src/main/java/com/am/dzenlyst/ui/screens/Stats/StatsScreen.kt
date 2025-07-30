@@ -10,17 +10,18 @@ fun StatsScreen(viewModel: StatsViewModel = hiltViewModel()) {
 
     val sessions by viewModel.last7Sessions.collectAsState()
 
+    val completedTasks by viewModel.completedTasksCount.collectAsState()
 
     val sessionCount = sessions.map { it.sessionCount }
     val total = sessionCount.sum()
-    val completedTask by viewModel.completedTaskCount.collectAsState()
+    //val completedTask by viewModel.completedTaskCount.collectAsState()
 
 
 
     StatsScreenContent(
         dailySessions = sessionCount ,
         focusSessions = total,
-        completedTasks = completedTask,
+        completedTasks = completedTasks,
         averageMinutesFocused = total * 25
     )
 }

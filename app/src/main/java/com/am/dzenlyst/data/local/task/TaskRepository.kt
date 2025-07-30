@@ -8,8 +8,8 @@ class TaskRepository @Inject constructor(
 ) {
 
     val allTasks: Flow<List<TaskEntity>> = dao.getAllTasks()
-    val completedTaskCount: Flow<Int> = dao.getCompletedTask()
-    val topTasks: Flow<List<TaskEntity>> = dao.getTop3UndoneTasks()
+    //val completedTaskCount: Flow<Int> = dao.getCompletedTask()
+    val topTasks: Flow<List<TaskEntity>> = dao.getActiveTask()
 
     suspend fun addTask(text: String, priority: TaskPriority) {
         val newTask = TaskEntity(text = text, isDone = false, priority = priority)
