@@ -19,6 +19,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.am.dzenlyst.data.local.task.TaskEntity
 import com.am.dzenlyst.data.local.task.TaskPriority
 import com.am.dzenlyst.ui.components.PrimaryButton
+import com.am.dzenlyst.ui.screens.TaskDetailsScreen.AddTaskSheetContent
+import com.am.dzenlyst.ui.screens.TaskDetailsScreen.TaskBottomSheet
 import com.am.dzenlyst.ui.screens.TaskDetailsScreen.TaskDetailsDialogue
 import kotlinx.coroutines.launch
 
@@ -31,13 +33,11 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
     var selectedTask by remember {mutableStateOf<TaskEntity?>(null)}
 
     var showSheet by remember { mutableStateOf(false) }
+    var showPriorityTable by remember { mutableStateOf(false)}
     var input by remember { mutableStateOf("") }
     var selectedPriority by remember { mutableStateOf(TaskPriority.Normal) }
 
     var showDialog by remember { mutableStateOf(false) }
-
-    var showSubtaskSheet by remember { mutableStateOf(false) }
-    var subtaskInput by remember { mutableStateOf("") }
 
     Scaffold {
         padding ->
@@ -84,7 +84,8 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
         }
             selectedTask?.let { task ->
                 TaskDetailsDialogue(task = task,
-                    onEditClick = { showSubtaskSheet = true},
+                    onEditClick = { showSheet = true
+                                  showPriorityTable = false},
                     onDismiss = {selectedTask = null})
 
             }
@@ -98,11 +99,22 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
                         showDialog = false
                     })
             }
+
+            LaunchedEffect(showSheet) {
+                if (showSheet) {
+                    input = ""
+                    selectedPriority = TaskPriority.Normal
+                    sheetState.show()
+                } else {
+                    sheetState.hide()
+                }
+            }
+
             if(!showSheet){
                 FloatingActionButton(
                     onClick = {
                         showSheet = true
-                        coroutineScope.launch { sheetState.show() }
+                        showPriorityTable = true
                     },
                     shape = CircleShape,
                     containerColor = colorResource(R.color.focusBlueLight),
@@ -112,63 +124,31 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add", tint = Color.White)
                 }
-            }
-
-            // Bottom view
-            if (showSheet) {
-
-                ModalBottomSheet(
+            }else{
+                TaskBottomSheet(sheetState = sheetState,
                     onDismissRequest = {
                         coroutineScope.launch {
                             sheetState.hide()
-                            if (input.isNotBlank()) {
-                                viewModel.addTask(input, selectedPriority)
-                                input = ""
-                            }
                             showSheet = false
                         }
-                    },
-                    sheetState = sheetState,
-                    shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(24.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        OutlinedTextField(
-                            value = input,
-                            onValueChange = { input = it },
-                            placeholder = { Text("New task") },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            PriorityDropdown(
-                                selected = selectedPriority,
-                                onChange = { selectedPriority = it }
-                            )
-
-                            PrimaryButton(
-                                text = "Add",
-                                onClick = {
-                                    coroutineScope.launch {
-                                        if (input.isNotBlank()) {
-                                            viewModel.addTask(input, selectedPriority)
-                                            input = ""
-                                        }
-                                        sheetState.hide()
-                                        showSheet = false
-                                    }
+                    }) {
+                    AddTaskSheetContent(
+                        input = input,
+                        onInputChange = {input = it},
+                        showPriorityTable = showPriorityTable,
+                        selectedPriority = selectedPriority,
+                        onPriorityChange = {selectedPriority = it},
+                        onAddClick = {
+                            coroutineScope.launch {
+                                if (input.isNotBlank()){
+                                    viewModel.addTask(input,selectedPriority)
+                                    input = ""
                                 }
-                            )
+                                sheetState.hide()
+                                showSheet = false
+                            }
                         }
-                    }
+                    )
                 }
             }
         }
