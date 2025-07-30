@@ -4,10 +4,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.am.dzenlyst.data.datastore.PomodoroPreferencesManager
+import com.am.dzenlyst.data.local.task.Subtasks.SubtaskEntity
 import com.am.dzenlyst.data.local.task.TaskEntity
 import com.am.dzenlyst.data.local.task.TaskPriority
 import com.am.dzenlyst.data.local.task.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -67,6 +69,30 @@ class TaskViewModel @Inject constructor(
         viewModelScope.launch {
 
             repository.updateTask(task)
+        }
+    }
+
+    // Subtasks
+
+    fun getSubtaasksForTask(taskId: Int): Flow<List<SubtaskEntity>> {
+        return repository.getSubtasksForTask(taskId)
+    }
+
+    fun addSubtask(taskId:Int, text: String){
+        viewModelScope.launch {
+            val subtask = SubtaskEntity(taskId = taskId, text = text)
+            repository.insertSubtask(subtask)
+        }
+    }
+
+    fun toggleSubtask(subtask : SubtaskEntity) {
+        viewModelScope.launch {
+            repository.updateSubtask(subtask.copy(isDone = !subtask.isDone))
+        }
+    }
+    fun deleteSubtask(subtask: SubtaskEntity) {
+        viewModelScope.launch {
+            repository.deleteSubtask(subtask)
         }
     }
 }

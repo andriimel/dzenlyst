@@ -9,6 +9,7 @@ import com.am.dzenlyst.data.datastore.PomodoroPreferencesManager
 import com.am.dzenlyst.data.local.focus.FocusSessionDao
 import com.am.dzenlyst.data.local.focus.FocusSessionRepository
 import com.am.dzenlyst.data.local.AppDatabase
+import com.am.dzenlyst.data.local.task.Subtasks.SubtaskDao
 import com.am.dzenlyst.data.local.task.TaskDao
 import com.am.dzenlyst.data.local.task.TaskRepository
 import dagger.Module
@@ -36,7 +37,7 @@ object AppModule {
     fun provideTaskDao(db: AppDatabase): TaskDao = db.taskDao()
 
     @Provides
-    fun provideTaskRepository(dao: TaskDao): TaskRepository = TaskRepository(dao)
+    fun provideTaskRepository(dao: TaskDao, subtaskDao: SubtaskDao): TaskRepository = TaskRepository(dao, subtaskDao)
 
     @Provides
     fun  providesFocusSessionsDao(db : AppDatabase): FocusSessionDao = db.focusSessionDao()
@@ -44,6 +45,9 @@ object AppModule {
     @Provides
     fun provideFocusSessionRepository(dao : FocusSessionDao): FocusSessionRepository =
         FocusSessionRepository(dao)
+    @Provides
+    fun provideSubtaskDao(db: AppDatabase): SubtaskDao = db.subtaskDao()
+
 
     @Provides
     @Singleton
