@@ -18,6 +18,7 @@
     <color name="taskPriorityHighBgColor">#FFFFCCBC</color>
     <color name="taskPriorityLowBgColor">#FFFFCCBC</color>
     <color name="taskPriorityNormalBgColor">#06BBCF</color>
+    <color name="deleteBgColor">#E64C5A</color>
 
 
 

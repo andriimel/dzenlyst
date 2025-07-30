@@ -3,6 +3,7 @@ package com.am.dzenlyst.data.local.task.Subtasks
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.am.dzenlyst.data.local.task.TaskEntity
 
@@ -15,7 +16,8 @@ import com.am.dzenlyst.data.local.task.TaskEntity
             childColumns = ["task_id"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index(value = ["task_id"])]
 )
 data class SubtaskEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,

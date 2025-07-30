@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.am.dzenlyst.data.local.task.TaskEntity
 import com.am.dzenlyst.data.local.task.TaskPriority
-import com.am.dzenlyst.ui.components.PrimaryButton
 import com.am.dzenlyst.ui.screens.TaskDetailsScreen.AddTaskSheetContent
 import com.am.dzenlyst.ui.screens.TaskDetailsScreen.TaskBottomSheet
 import com.am.dzenlyst.ui.screens.TaskDetailsScreen.TaskDetailsDialogue
@@ -32,9 +31,11 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
     val coroutineScope = rememberCoroutineScope()
     var selectedTask by remember {mutableStateOf<TaskEntity?>(null)}
 
+    val selectedTasksId = selectedTask?.id
+
     var showSheet by remember { mutableStateOf(false) }
     var showPriorityTable by remember { mutableStateOf(false)}
-    var input by remember { mutableStateOf("") }
+    var inputText by remember { mutableStateOf("") }
     var selectedPriority by remember { mutableStateOf(TaskPriority.Normal) }
 
     var showDialog by remember { mutableStateOf(false) }
@@ -86,7 +87,8 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
                 TaskDetailsDialogue(task = task,
                     onEditClick = { showSheet = true
                                   showPriorityTable = false},
-                    onDismiss = {selectedTask = null})
+                    onDismiss = {selectedTask = null},
+                    viewModel)
 
             }
 
@@ -102,7 +104,7 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
 
             LaunchedEffect(showSheet) {
                 if (showSheet) {
-                    input = ""
+                    inputText = ""
                     selectedPriority = TaskPriority.Normal
                     sheetState.show()
                 } else {
@@ -133,16 +135,22 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
                         }
                     }) {
                     AddTaskSheetContent(
-                        input = input,
-                        onInputChange = {input = it},
+                        input = inputText,
+                        onInputChange = {inputText = it},
                         showPriorityTable = showPriorityTable,
                         selectedPriority = selectedPriority,
                         onPriorityChange = {selectedPriority = it},
                         onAddClick = {
                             coroutineScope.launch {
-                                if (input.isNotBlank()){
-                                    viewModel.addTask(input,selectedPriority)
-                                    input = ""
+                                if (inputText.isNotBlank()){
+                                    if (showPriorityTable) {
+                                        viewModel.addTask(inputText, selectedPriority)
+                                    } else {
+                                       selectedTasksId?.let { taskId->
+                                           viewModel.addSubtask(taskId, inputText)
+                                       }
+                                    }
+                                    inputText = ""
                                 }
                                 sheetState.hide()
                                 showSheet = false

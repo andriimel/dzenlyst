@@ -1,6 +1,5 @@
 package com.am.dzenlyst.ui.screens.Tasks
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.am.dzenlyst.data.datastore.PomodoroPreferencesManager
@@ -9,7 +8,6 @@ import com.am.dzenlyst.data.local.task.TaskEntity
 import com.am.dzenlyst.data.local.task.TaskPriority
 import com.am.dzenlyst.data.local.task.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +22,7 @@ class TaskViewModel @Inject constructor(
 ) : ViewModel() {
 
 
+
     val tasks: StateFlow<List<TaskEntity>> = repository.allTasks.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
@@ -33,6 +32,10 @@ class TaskViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(5000),
         emptyList()
     )
+
+    private val _subtasks = MutableStateFlow<List<SubtaskEntity>>(emptyList())
+    val subtasks: StateFlow<List<SubtaskEntity>> = _subtasks
+
     fun  addTask( text: String, priority: TaskPriority = TaskPriority.Normal){
         viewModelScope.launch {
             repository.addTask(text, priority)
@@ -65,7 +68,7 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    fun updateTask(task: TaskEntity) {
+    fun updateSubtask(task: TaskEntity) {
         viewModelScope.launch {
 
             repository.updateTask(task)
@@ -74,9 +77,14 @@ class TaskViewModel @Inject constructor(
 
     // Subtasks
 
-    fun getSubtaasksForTask(taskId: Int): Flow<List<SubtaskEntity>> {
-        return repository.getSubtasksForTask(taskId)
+    fun getSubtasksForTask(taskId: Int){
+        viewModelScope.launch {
+            repository.getSubtasksForTask(taskId).collect { list ->
+                _subtasks.value = list
+            }
+        }
     }
+
 
     fun addSubtask(taskId:Int, text: String){
         viewModelScope.launch {

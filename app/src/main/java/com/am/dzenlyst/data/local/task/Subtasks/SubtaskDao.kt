@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SubtaskDao {
-    @Query("SELECT * FROM subtasks WHERE taskId = :taskId")
+    @Query("SELECT * FROM subtasks WHERE task_id = :taskId")
     fun getSubtasksForTask(taskId: Int): Flow<List<SubtaskEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -21,4 +21,4 @@ interface SubtaskDao {
 
     @Delete
     suspend fun deleteSubtask(subtask: SubtaskEntity)
-}
+    }
