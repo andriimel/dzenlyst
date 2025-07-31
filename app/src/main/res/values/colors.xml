@@ -19,6 +19,10 @@
     <color name="taskPriorityLowBgColor">#FFFFCCBC</color>
     <color name="taskPriorityNormalBgColor">#06BBCF</color>
     <color name="deleteBgColor">#E64C5A</color>
+    <color name="checkboxCheckColor">#FF2196F3</color>
+    <color name="checkboxUncheckColor">#FFFFFF</color>
+    <color name="checkmarkColor">#ECEDF1</color>
+    <color name="checkboxBorderColor">#828290</color>
 
 
 

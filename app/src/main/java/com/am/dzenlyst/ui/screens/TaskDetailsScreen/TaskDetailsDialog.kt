@@ -77,7 +77,8 @@ fun TaskDetailsDialogue(
                 LazyColumn(
                     modifier = Modifier
                         .weight(1f)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(start = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(subtasks, key = { it.id }) { subtask ->
