@@ -41,7 +41,7 @@ fun CoachScreen(viewModel: CoachViewModel = hiltViewModel()) {
             )
 
             PrimaryButton(text = "Ask",
-                onClick = viewModel::askGemini,
+                onClick = viewModel::askGeminiStream,
                 modifier = Modifier.align(Alignment.End)
                 )
 

@@ -57,6 +57,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation("com.google.firebase:firebase-ai")
+    implementation("com.google.firebase:firebase-ai:17.0.0")
+
 
 
     implementation("androidx.room:room-runtime:$room_version")
@@ -81,6 +83,8 @@ dependencies {
 
     //DataStore
     implementation("androidx.datastore:datastore-preferences:1.1.7")
+
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

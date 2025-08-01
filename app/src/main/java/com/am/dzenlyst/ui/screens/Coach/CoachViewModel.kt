@@ -22,24 +22,27 @@ class CoachViewModel @Inject constructor( private val repo: GeminiRepository): V
         prompt = value
     }
 
-    fun askGemini() {
+    fun askGeminiStream() {
         val currentPrompt = prompt.trim()
         if (currentPrompt.isBlank()) return
 
+
         viewModelScope.launch {
             isLoading = true
+            result = ""
             try {
-                val fullAnswer = repo.ask(currentPrompt)
-                prompt = ""
-                result = ""
-                for ( char in fullAnswer) {
-                    result += char
-                    delay(30)
-                }
+               repo.askStream(currentPrompt).collect { chunk ->
+                   isLoading = false
+                   for (char in chunk) {
+                       result += char
+                       delay(20)
+                   }
+               }
             } catch (e: Exception) {
                 result = "Error: ${e.localizedMessage}"
             } finally {
                 isLoading = false
+                prompt = ""
             }
         }
     }

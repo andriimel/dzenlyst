@@ -1,14 +1,13 @@
 import {setGlobalOptions} from "firebase-functions";
-import {onRequest} from "firebase-functions/https";
+import {onRequest} from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
-import axios from "axios";
 import * as dotenv from "dotenv";
+import {GoogleGenerativeAI} from "@google/generative-ai";
 
 dotenv.config();
-
 setGlobalOptions({maxInstances: 10});
 
-export const geminiChat = onRequest(async (req, res) => {
+export const geminiChat = onRequest({timeoutSeconds: 60}, async (req, res) => {
   try {
     const prompt = req.body.prompt;
     if (!prompt) {
@@ -23,16 +22,28 @@ export const geminiChat = onRequest(async (req, res) => {
       return;
     }
 
-    const response = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
-      {
-        contents: [{parts: [{text: prompt}]}],
-      }
-    );
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({model: "gemini-pro"});
 
-    res.status(200).json(response.data);
+    const result = await model.generateContentStream({
+      contents: [{role: "user", parts: [{text: prompt}]}],
+    });
+
+    // Set headers for streaming
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+
+    for await (const chunk of result.stream) {
+      const text = chunk.text();
+      if (text) {
+        res.write(`data: ${text}\n\n`);
+      }
+    }
+
+    res.end();
   } catch (error) {
-    logger.error("Error calling Gemini API:", error);
+    logger.error("Error calling Gemini Streaming API:", error);
     res.status(500).send("Internal Server Error");
   }
 });
