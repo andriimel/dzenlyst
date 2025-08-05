@@ -14,10 +14,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.am.dzenlyst.R
 import com.am.dzenlyst.ui.screens.PomodoScreen.PomodoroViewModel
+import com.am.dzenlyst.ui.utils.MontserratFont
 
 @Composable
 fun PomodoroModeSelectorDialog(
@@ -37,7 +42,10 @@ fun PomodoroModeSelectorDialog(
             ) {
                 Text(
                     text = "Select Focus Mode",
-                    style = MaterialTheme.typography.h5,
+                    fontFamily = MontserratFont,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 22.sp,
+                    color = colorResource(id = R.color.regularTextColor),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp)

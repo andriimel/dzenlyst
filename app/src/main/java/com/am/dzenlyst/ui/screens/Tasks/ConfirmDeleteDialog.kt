@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ConfirmDialog(title: String = "Complete the task?",
+fun ConfirmDeleteDialog(title: String = "Complete the task?",
                   onConfirm: () -> Unit,
                   onDismiss: () -> Unit){
     AlertDialog(

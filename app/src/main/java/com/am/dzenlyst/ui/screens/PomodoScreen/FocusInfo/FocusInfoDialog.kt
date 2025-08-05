@@ -7,8 +7,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.am.dzenlyst.ui.components.PrimaryButton
+import com.am.dzenlyst.ui.utils.MontserratFont
 
 @Composable
 fun FocusInfoDialog(
@@ -19,29 +22,56 @@ fun FocusInfoDialog(
         containerColor = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(16.dp),
         title = {
-            Text("Pomodoro Modes")
+            Text(
+                text = "Pomodoro Modes",
+                fontFamily = MontserratFont,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold
+            )
         },
         text = {
-            Column(
-                modifier = Modifier.padding(8.dp)
-            ) {
-                Text("Classic Pomodoro:")
-                Text("- 25 min work, 5 min short break, 15 min long break\n")
-                Text("Extended Focus:")
-                Text("- 50 min work, 10 min break\n")
-                Text("Ultra-Short Sprints:")
-                Text("- 15 min work, 3 min break\n")
-                Text("Flow-Based:")
-                Text("- Variable work time based on flow state\n")
-                Text("Balanced Focus:")
-                Text("- 35 min work, 7 min break\n")
-                Text("Adaptive:")
-                Text("- Dynamic intervals based on performance\n")
+            Column(modifier = Modifier.padding(8.dp)) {
+                ModeDescription(
+                    title = "🟥 Classic",
+                    description = "25 min focus • 5 min break • 15 min long break after 4 cycles.\nGood for beginners and standard tasks."
+                )
+                Spacer(Modifier.height(8.dp))
+                ModeDescription(
+                    title = "🟦 Extended Focus",
+                    description = "50 min focus • 10 min break • 25 min long break after 2 cycles.\nBest for deep work and experienced users."
+                )
+                Spacer(Modifier.height(8.dp))
+                ModeDescription(
+                    title = "🟩 Sprint",
+                    description = "10 min focus • 2 min break • 10 min long break after 5 cycles.\nGreat for quick starts or ADHD-friendly workflows."
+                )
+                Spacer(Modifier.height(8.dp))
+                ModeDescription(
+                    title = "🟨 Balanced",
+                    description = "40 min focus • 10 min break • 20 min long break after 3 cycles.\nA universal choice balancing depth and recovery."
+                )
             }
         },
         confirmButton = {
-            PrimaryButton(text = "Close", onClick = onDismiss, filled = true )
-
+            PrimaryButton(text = "Close", onClick = onDismiss, filled = true)
         }
     )
+}
+
+@Composable
+private fun ModeDescription(title: String, description: String) {
+    Column {
+        Text(
+            text = title,
+            fontFamily = MontserratFont,
+            fontWeight = FontWeight.Medium,
+            fontSize = 16.sp
+        )
+        Text(
+            text = description,
+            fontFamily = MontserratFont,
+            fontWeight = FontWeight.Medium,
+            fontSize = 14.sp
+        )
+    }
 }

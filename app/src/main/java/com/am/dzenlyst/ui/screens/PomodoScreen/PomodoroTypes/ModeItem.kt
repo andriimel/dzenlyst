@@ -14,8 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.am.dzenlyst.R
+import com.am.dzenlyst.ui.utils.MontserratFont
 
 @Composable
 fun ModeItem(
@@ -49,7 +52,9 @@ fun ModeItem(
             text = mode.type.name.replace("_", " ")
                 .lowercase()
                 .replaceFirstChar { it.uppercase() },
-            style = MaterialTheme.typography.body1,
+            fontFamily = MontserratFont,
+            fontWeight = FontWeight.Medium,
+            fontSize = 18.sp,
             color = textColor
         )
     }

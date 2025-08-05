@@ -12,8 +12,8 @@ data class PomodoroMode(
 val PomodoroModes = listOf(
     PomodoroMode(PomodoroModeType.CLASSIC, 25, 5, 15, 4),
     PomodoroMode(PomodoroModeType.EXTENDED, 50, 10, 20, 4),
-    PomodoroMode(PomodoroModeType.SPRINT, 1, 3, 10, 4),
-    PomodoroMode(PomodoroModeType.BALANCED, 35, 7, 15, 4)
+    PomodoroMode(PomodoroModeType.SPRINT, 10, 2, 10, 5),
+    PomodoroMode(PomodoroModeType.BALANCED, 40, 10, 20, 3)
 
 )
 fun getPomodoroModeByType(typeName: String?): PomodoroMode {

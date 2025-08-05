@@ -93,7 +93,7 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
             }
 
             if (showDialog){
-                ConfirmDialog(onConfirm = {
+                ConfirmDeleteDialog(onConfirm = {
                     showDialog = false
                     viewModel.incrementConfirmedProjects()
                 },

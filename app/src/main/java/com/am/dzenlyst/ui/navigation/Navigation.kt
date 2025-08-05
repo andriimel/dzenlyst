@@ -42,7 +42,7 @@ fun Navigation(viewModel: PomodoroViewModel= hiltViewModel()){
             startDestination = Screens.Focus.route,
             modifier = Modifier.padding(innerPadding)
         ){
-            composable(Screens.Focus.route) { PomodoroScreen(navController) }
+            composable(Screens.Focus.route) { PomodoroScreen() }
             composable(Screens.Tasks.route) { TasksScreen() }
             composable(Screens.Stats.route) { StatsScreen() }
             composable(Screens.Coach.route) { CoachScreen() }

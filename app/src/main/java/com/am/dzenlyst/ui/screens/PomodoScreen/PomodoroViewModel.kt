@@ -46,7 +46,7 @@ class PomodoroViewModel @Inject constructor(app : Application,
     private val _isRunningFlow = MutableStateFlow(false)
     val isRunningFlow: StateFlow<Boolean> = _isRunningFlow
 
-    private var initialSeconds = 25*60
+    private var initialSeconds: Int = 0
     private var totalSeconds = initialSeconds
     private var isRunning = false
 
@@ -130,7 +130,8 @@ class PomodoroViewModel @Inject constructor(app : Application,
         _isRunningFlow.value = false
         timerJob?.cancel()
 
-        totalSeconds = _selectMode.value.workDuration * 60
+        initialSeconds = _selectMode.value.workDuration * 60
+        totalSeconds = initialSeconds
         _timeLeft.value = formatTime(totalSeconds)
         _progress.value = 1f
     }
@@ -154,7 +155,7 @@ class PomodoroViewModel @Inject constructor(app : Application,
 
         _phase.value = when (_phase.value) {
             PomodoroPhase.Work -> {
-                if (_completedWorkSession.value % 4 == 0)
+                if (_completedWorkSession.value % _selectMode.value.roundsBeforeLongBreak == 0)
                     PomodoroPhase.LongBreak
                 else
                     PomodoroPhase.ShortBreak
@@ -163,12 +164,13 @@ class PomodoroViewModel @Inject constructor(app : Application,
             PomodoroPhase.LongBreak -> PomodoroPhase.Work
         }
 
-        totalSeconds = when (_phase.value) {
+        initialSeconds = when (_phase.value) {
             PomodoroPhase.Work -> _selectMode.value.workDuration * 60
             PomodoroPhase.ShortBreak -> _selectMode.value.shortBreak * 60
             PomodoroPhase.LongBreak -> _selectMode.value.longBreak * 60
         }
 
+        totalSeconds = initialSeconds
         _timeLeft.value = formatTime(totalSeconds)
         _progress.value = 1f
     }

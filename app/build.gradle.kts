@@ -59,7 +59,9 @@ dependencies {
     implementation("com.google.firebase:firebase-ai")
     implementation("com.google.firebase:firebase-ai:17.0.0")
 
-
+    //Font
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.8.3")
+    implementation("androidx.core:core-ktx:1.10.1")
 
     implementation("androidx.room:room-runtime:$room_version")
     ksp("androidx.room:room-compiler:$room_version")

@@ -23,6 +23,14 @@
     <color name="checkboxUncheckColor">#FFFFFF</color>
     <color name="checkmarkColor">#ECEDF1</color>
     <color name="checkboxBorderColor">#828290</color>
+    <color name="progressBarBgColor">#ECEDF1</color>
+    <color name="progressBarRestColor">#FF4CAF50</color>
+    <color name="progressBarWorkColor">#FF2196F3</color>
+
+    <color name="mainTitleColor">#1A1A1B</color>
+    <color name="regularTextColor">#171616</color>
+
+
 
 
 
