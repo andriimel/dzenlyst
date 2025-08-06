@@ -17,3 +17,11 @@ val MontserratFont = FontFamily(
     Font(R.font.montserrat_title, FontWeight.SemiBold),
     Font(R.font.montserrat_regular_text_font, FontWeight.Medium)
 )
+
+fun cleanAndCapitalize(text: String): String {
+    val singleLine = text.replace(Regex("\n{2,}"), "\n").trim()
+    val words = singleLine.split(" ")
+    if (words.isEmpty()) return ""
+    val first = words.first().replaceFirstChar { it.uppercaseChar() }
+    return (listOf(first) + words.drop(1)).joinToString(" ")
+}

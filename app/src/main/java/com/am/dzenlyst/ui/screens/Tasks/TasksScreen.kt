@@ -14,13 +14,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.am.dzenlyst.data.local.task.TaskEntity
 import com.am.dzenlyst.data.local.task.TaskPriority
 import com.am.dzenlyst.ui.screens.TaskDetailsScreen.AddTaskSheetContent
 import com.am.dzenlyst.ui.screens.TaskDetailsScreen.TaskBottomSheet
 import com.am.dzenlyst.ui.screens.TaskDetailsScreen.TaskDetailsDialogue
+import com.am.dzenlyst.ui.utils.MontserratFont
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +57,11 @@ fun TasksScreen(viewModel: TaskViewModel = hiltViewModel()) {
                 .padding(horizontal = 24.dp, vertical = 0.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text("Tasks", style = MaterialTheme.typography.headlineMedium)
+            Text("Tasks",
+                color = colorResource(id = R.color.mainTitleColor),
+                fontFamily = MontserratFont,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 56.sp )
 
             Surface(
                 modifier = Modifier

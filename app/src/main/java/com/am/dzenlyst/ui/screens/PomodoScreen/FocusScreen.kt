@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.am.dzenlyst.data.local.task.TaskEntity
 import com.am.dzenlyst.data.local.task.TaskPriority
 import com.am.dzenlyst.ui.screens.PomodoScreen.FocusInfo.FocusInfoDialog
@@ -156,7 +155,7 @@ fun PomodoroScreen(pomodoroViewModel: PomodoroViewModel = hiltViewModel(),
             PomodoroTimer(timeLeft = timeLeft, progress = progress, phase = phase)
             PomodoroControls(viewModel = pomodoroViewModel)
             Spacer(modifier = Modifier.height(32.dp))
-            FocusTaskList(
+            FocusTask(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 tasks = topTasks
             ) { taskClicked ->

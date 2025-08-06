@@ -21,10 +21,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.am.dzenlyst.data.local.task.TaskEntity
 import com.am.dzenlyst.data.local.task.TaskPriority
+import com.am.dzenlyst.ui.components.CustomCheckbox
 import com.am.dzenlyst.ui.components.PrimaryCheckbox
+import com.am.dzenlyst.ui.utils.MontserratFont
+import com.am.dzenlyst.ui.utils.cleanAndCapitalize
 
 @Composable
 fun TaskItem(
@@ -55,41 +61,46 @@ fun TaskItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp, vertical = 12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(modifier = Modifier
-                .padding(6.dp),
-                verticalAlignment = Alignment.CenterVertically) {
-//                Checkbox(
-//                    checked = task.isDone,
-//                    onCheckedChange = { onToggle() }
-//                )
-                PrimaryCheckbox(checked = task.isDone,
-                    onCheckedChange = {onToggle()},
-                    modifier = Modifier
-                        .size(26.dp))
-                Spacer(modifier = Modifier.width(8.dp))
+//            PrimaryCheckbox(
+//                checked = task.isDone,
+//                onCheckedChange = { onToggle() },
+//                modifier = Modifier.size(26.dp)
+//            )
+            CustomCheckbox(checked = task.isDone,
+                onCheckedChange = {onToggle()},
+                )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+
+            Text(
+                text = cleanAndCapitalize(task.text),
+                modifier = Modifier.weight(1f),
+                fontFamily = MontserratFont,
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            // Surface з пріоритетом завжди показується
+            Surface(
+                color = priorityColor,
+                shape = RoundedCornerShape(12.dp)
+            ) {
                 Text(
-                    text = task.text,
-                    style = MaterialTheme.typography.bodyLarge
+                    text = task.priority.name,
+                    color = priorityTextColor,
+                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 2.dp)
                 )
             }
-
-
-                Surface(
-                    color = priorityColor,
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Text(
-                        text = task.priority.name,
-                        color = priorityTextColor,
-                        style = MaterialTheme.typography.labelSmall,
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp, vertical = 2.dp)
-                    )
-                }
-
         }
     }
 }
